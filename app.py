@@ -29,7 +29,7 @@ def read_files():
     stocks_ast.index = stocks_ast['ДАТА']
     stocks_smt.index = stocks_smt['ДАТА']
     
-    suppliers = pd.read_excel('data\ПАРАМЕТРЫ ПОСТАВЩИКОВ.xlsx')
+    suppliers = pd.read_excel('ПАРАМЕТРЫ ПОСТАВЩИКОВ.xlsx')
 
     suppliers['ПОСТАВЩИК'] = suppliers['ПОСТАВЩИК'].apply(lambda x: x[:15])
     
