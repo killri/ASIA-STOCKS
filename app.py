@@ -97,6 +97,7 @@ for art in art_list:
         
         if stats[i][stats[i]['АРТИКУЛ'] == art].shape[0]>0:
             s = '\n' + d[i] + '\n'
+            s += 'Дата актуальности: ' + str(stocks[i]['ДАТА'].max())[:10] + '\n'
             art_name = stats[i][stats[i]['АРТИКУЛ'] == art]['ТОВАР'].iloc[0]
             curr_stock = stats[i][stats[i]['АРТИКУЛ'] == art]['curr_stock'].iloc[0]
             deficit_level = stats[i][stats[i]['АРТИКУЛ'] == art]['deficit_level'].iloc[0]
@@ -121,6 +122,7 @@ for art in art_list:
             s += 'Дубликаты: ' + str(art_list) + '\n'
             s += 'КЛИЕНТОВ: ' + str(stats[i][stats[i]['АРТИКУЛ']==art]['КЛИЕНТОВ'].iloc[0])+ '\n'
             s += 'Динамика продаж: ' + str(stats[i][stats[i]['АРТИКУЛ'] == art]['sales_sym'].iloc[0].round(2))
+            
 
 
             fig, ax = plt.subplots(1,1, figsize = [8,3])
