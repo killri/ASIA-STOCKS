@@ -29,14 +29,19 @@ def read_files():
     stocks_ast.index = stocks_ast['ДАТА']
     stocks_smt.index = stocks_smt['ДАТА']
     
-    suppliers = pd.read_excel('ПАРАМЕТРЫ ПОСТАВЩИКОВ.xlsx')
+    suppliers = pd.read_excel('ПАРАМЕТРЫ ПОСТАВЩИКОВ 2.xlsx')
 
     suppliers['ПОСТАВЩИК'] = suppliers['ПОСТАВЩИК'].apply(lambda x: x[:15])
-    
-    return sales_alm, sales_ast, sales_smt, stocks_alm, stocks_ast, stocks_smt, stats_alm, stats_ast, stats_smt, suppliers
+
+    supp_alm = suppliers[suppliers['ФИЛИАЛ'] == 'АЛМ'].drop('ФИЛИАЛ', axis=1) #
+    supp_ast = suppliers[suppliers['ФИЛИАЛ'] == 'АСТ'].drop('ФИЛИАЛ', axis=1) #
+    supp_smt = suppliers[suppliers['ФИЛИАЛ'] == 'ШМТ'].drop('ФИЛИАЛ', axis=1) #
 
 
-sales_alm, sales_ast, sales_smt, stocks_alm, stocks_ast, stocks_smt, stats_alm, stats_ast, stats_smt, suppliers = read_files()
+    return sales_alm, sales_ast, sales_smt, stocks_alm, stocks_ast, stocks_smt, stats_alm, stats_ast, stats_smt, supp_alm,supp_ast,supp_smt
+
+
+sales_alm, sales_ast, sales_smt, stocks_alm, stocks_ast, stocks_smt, stats_alm, stats_ast, stats_smt, supp_alm, supp_ast, supp_smt   = read_files()
 
 #Напишем заголовок                
 st.title("Визуализация динамики продаж по артикулу на 3х складах")                
@@ -54,6 +59,7 @@ art = int(art)
 sales = [sales_alm, sales_ast, sales_smt]
 stocks = [stocks_alm, stocks_ast, stocks_smt]
 stats = [stats_alm, stats_ast, stats_smt]
+supp_table = [supp_alm, supp_ast, supp_smt]
 
 for i in range(3):
     stats[i] = stats[i].fillna({'ДУБЛИКАТЫ':""})
@@ -89,8 +95,9 @@ d = {0:'АЛМ', 1: 'АСТ', 2: 'ШМТ'}
 for art in art_list:
     for i in range(3):
 
-        regularity_days = 10
-        transport_days = 8
+        regularity_days = supp_table[i][supp_table[i]['ПОСТАВЩИК'] == 'По умолчанию']['РЕГУЛЯРНОСТЬ ДНИ'].iloc[0] 
+        transport_days = supp_table[i][supp_table[i]['ПОСТАВЩИК'] == 'По умолчанию']['ПЛЕЧО ДНИ'].iloc[0]
+        suppliers = supp_table[i]
         
         if stats[i][stats[i]['АРТИКУЛ'] == art].shape[0]>0:
             supplier = stats[i][stats[i]['АРТИКУЛ'] == art]['ПОСТАВЩИК'].iloc[0]
