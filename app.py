@@ -68,9 +68,10 @@ art_set = art_set.union({str(art)})  #добавка-исправление. Т�
 
 for i in range(3):
     if stats[i][stats[i]['ТОВАР'] == art_name]['АРТИКУЛ'].shape[0]>0:
-        art_main = stats[i][stats[i]['ТОВАР'] == art_name]['АРТИКУЛ'].iloc[0]
-        dubs = stats[i][stats[i]['ТОВАР'] == art_name]['ДУБЛИКАТЫ'].iloc[0]
-        art_set = art_set.union({str(art_main)})
+        for j in range(stats[i][stats[i]['ТОВАР'] == art_name]['АРТИКУЛ'].shape[0]):
+            art_main = stats[i][stats[i]['ТОВАР'] == art_name]['АРТИКУЛ'].iloc[j]
+            dubs = stats[i][stats[i]['ТОВАР'] == art_name]['ДУБЛИКАТЫ'].iloc[j]
+            art_set = art_set.union({str(art_main)})
         
         if len(dubs) > 0:
             art_set = art_set.union(set(re.sub(r'[,\[\]]','',dubs).split()))
