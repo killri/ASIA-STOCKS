@@ -117,12 +117,15 @@ for art in art_list:
             overstock_level = stats[i][stats[i]['АРТИКУЛ'] == art]['overstock_level'].iloc[0]
             mean_level = stats[i][stats[i]['АРТИКУЛ'] == art]['sales_mean'].iloc[0]
             sales_dynamics = stats[i][stats[i]['АРТИКУЛ'] == art]['sales_sym'].iloc[0]
+            upcomming = stats[i][stats[i]['АРТИКУЛ'] == art]['В пути'].iloc[0]
+            
             s += 'Кластер: ' + stats[i][stats[i]['АРТИКУЛ']==art]['cluster_name'].iloc[0]+ '\n'
             s += 'Регулярность дни: ' + str(regularity_days)+ '\n'
             s += 'Плечо дни: ' + str(transport_days) + '\n'
 
             stock_on_income = max([curr_stock - mean_level*transport_days,0])
             s += 'Остаток к приходу: ' + str(stock_on_income) + '\n'
+            s += 'В пути: ' + str(upcomming) + '\n'
             s += 'Середина оптимального остатка: ' + str((optimum_zone_level + (overstock_level-optimum_zone_level)/2).round(0))+ '\n'
             s += 'Cредние продажи в день: ' + str(mean_level.round(0)) + '\n'
 
